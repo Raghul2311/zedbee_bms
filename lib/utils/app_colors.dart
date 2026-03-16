@@ -11,7 +11,7 @@ class AppColors {
   static const Color darkgreen = Color(0xff002D1F);
   static const Color lightgreen = Color(0xff009163);
   static const Color darkbacground = Color(0xff001F0C);
- // Text color
+  // Text color
   static const Color lightText = Color(0xFF187bcd);
 
   // background color
@@ -39,5 +39,11 @@ class AppColors {
     return Theme.of(context).brightness == Brightness.dark
         ? Color(0xffF2F6F8)
         : Color(0xff161719);
+  }
+
+  static Color textColor3(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? Color(0xffF2F6F8)
+        : Color(0xff2F2F2F);
   }
 }

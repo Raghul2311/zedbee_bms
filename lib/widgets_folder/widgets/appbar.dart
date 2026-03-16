@@ -63,7 +63,7 @@ class DynamicAppbar extends StatelessWidget implements PreferredSizeWidget {
                     onPressed: onBackPressed ?? () => Navigator.pop(context),
                     icon: Icon(
                       Icons.arrow_back,
-                      color: AppColors.textColor2(context),
+                      color: Colors.white,
                       size: 24.r,
                     ),
                   ),
@@ -73,7 +73,7 @@ class DynamicAppbar extends StatelessWidget implements PreferredSizeWidget {
                   title.toUpperCase(),
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    color: AppColors.textColor2(context),
+                    color: Colors.white,
                     fontSize: 5.sp,
                     fontWeight: FontWeight.w600,
                   ),
@@ -85,7 +85,7 @@ class DynamicAppbar extends StatelessWidget implements PreferredSizeWidget {
                   IconButton(
                     icon: Icon(
                       Icons.home,
-                      color: AppColors.textColor2(context),
+                      color: Colors.white,
                       size: 24.r,
                     ),
                     onPressed: () {
@@ -103,7 +103,7 @@ class DynamicAppbar extends StatelessWidget implements PreferredSizeWidget {
                 if (showLoginButton)
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.textColor2(context),
+                      backgroundColor: Colors.white,
                       padding: EdgeInsets.symmetric(horizontal: 8.w),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.r),
@@ -137,7 +137,7 @@ class DynamicAppbar extends StatelessWidget implements PreferredSizeWidget {
                     constraints: const BoxConstraints(),
                     icon: Icon(
                       Icons.menu_sharp,
-                      color: AppColors.textColor2(context),
+                      color: Colors.white,
                       size: 24.r,
                     ),
                     onPressed: () => scaffoldKey!.currentState?.openDrawer(),

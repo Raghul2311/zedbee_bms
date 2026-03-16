@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:zedbee_bms/utils/app_colors.dart';
 
 class LocationDropdown extends StatelessWidget {
   final String? value;
@@ -41,7 +40,7 @@ class LocationDropdown extends StatelessWidget {
 
         style: TextStyle(
           fontSize: 4.sp,
-          color: AppColors.green,
+                                      color: Theme.of(context).primaryColorDark,
           fontWeight: FontWeight.w700,
         ),
 

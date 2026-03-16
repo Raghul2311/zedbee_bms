@@ -7,13 +7,13 @@ List<Color> getThemeGradient(AppTheme theme) {
     case AppTheme.system:
       return [AppColors.darkgreen, AppColors.lightgreen.withOpacity(0.3)];
     case AppTheme.light:
-      return [AppColors.darkBlue, AppColors.lightBlue];
+      return [AppColors.darkBlue, AppColors.lightBlue.withOpacity(0.3)];
 
     case AppTheme.dark:
-      return [AppColors.bgcolor, Colors.black87];
+      return [AppColors.bgcolor, Colors.black12];
 
     case AppTheme.orange:
-      return [AppColors.orange, Colors.deepOrange];
+      return [AppColors.orange, Colors.deepOrange.withOpacity(0.3)];
 
     case AppTheme.green:
       return [const Color(0xff00A571), AppColors.lightgreen.withOpacity(0.10)];

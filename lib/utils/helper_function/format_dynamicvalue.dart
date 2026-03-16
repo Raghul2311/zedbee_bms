@@ -60,11 +60,12 @@ class FormatDynamicvalue {
   }
 
   static Color color(
+    BuildContext context,
     String fieldName,
     dynamic rawValue, {
     String? equipmentName,
   }) {
-    if (rawValue == null) return Colors.grey;
+    if (rawValue == null) return Colors.black;
 
     final key = fieldName.toLowerCase().trim();
     final value = rawValue.toString().trim();
@@ -88,26 +89,26 @@ class FormatDynamicvalue {
         return value == '1' ? Colors.green : Colors.red;
       case 'pam':
       case 'hoas':
-        return _pamColor(value);
+        return _pamColor(value, context);
       case 'v1s':
-        return _ahuSourceColor(value);
+        return _ahuSourceColor(value, context);
       case 'v2s':
-        return _vavSourceColor(value);
+        return _vavSourceColor(value, context);
       case 'fls':
       case 'frs':
       case 'scs':
       case 'chs':
-        return value == '0' ? Colors.green : Colors.red;
+        return value == '0' ? Theme.of(context).primaryColorDark : Colors.red;
       case 'mod':
-        return _modeColor(value);
+        return _modeColor(value, context);
       case 'pir':
-        return _pirStatusColor(value);
+        return _pirStatusColor(value, context);
       case 'sts':
-        return _setTempSourceColor(value);
+        return _setTempSourceColor(value, context);
       case 'level':
-        return _levelSwitchColor(value);
+        return _levelSwitchColor(value, context);
       default:
-        return Colors.green;
+        return Theme.of(context).primaryColorDark;
     }
   }
 
@@ -164,7 +165,7 @@ class FormatDynamicvalue {
     }
   }
 
-  static Color _pamColor(String value) {
+  static Color _pamColor(String value, BuildContext context) {
     switch (value) {
       case '0':
         return Colors.red;
@@ -173,7 +174,7 @@ class FormatDynamicvalue {
       case '2':
         return Colors.orange;
       default:
-        return Colors.grey;
+        return Colors.black;
     }
   }
 
@@ -215,10 +216,10 @@ class FormatDynamicvalue {
   }
 
   // ONE COMMON MODE COLOR
-  static Color _modeColor(String value) {
+  static Color _modeColor(String value, BuildContext context) {
     switch (value) {
       case '0':
-        return Colors.green;
+        return Theme.of(context).primaryColorDark;
       case '1':
         return Colors.red;
       case '2':
@@ -228,7 +229,7 @@ class FormatDynamicvalue {
       case '4':
         return Colors.orange;
       default:
-        return Colors.grey;
+        return Colors.black;
     }
   }
 
@@ -258,13 +259,13 @@ class FormatDynamicvalue {
     return map[value] ?? 'N/A';
   }
 
-  static Color _ahuSourceColor(String value) {
+  static Color _ahuSourceColor(String value, BuildContext context) {
     final v = int.tryParse(value);
-    if (v == null) return Colors.grey;
+    if (v == null) return Colors.black;
     if (v == 16) return Colors.red;
     if (v == 17) return Colors.orange;
-    if (v == 0) return Colors.green;
-    return Colors.blueGrey;
+    if (v == 0) return Theme.of(context).primaryColorDark;
+    return Colors.black54;
   }
 
   /// ================= VAV SOURCE =================
@@ -295,13 +296,13 @@ class FormatDynamicvalue {
     return map[value] ?? 'N/A';
   }
 
-  static Color _vavSourceColor(String value) {
+  static Color _vavSourceColor(String value, BuildContext context) {
     final v = int.tryParse(value);
-    if (v == null) return Colors.grey;
-    if ([0, 2, 4, 6, 8].contains(v)) return Colors.green;
+    if (v == null) return Colors.black;
+    if ([0, 2, 4, 6, 8].contains(v)) return Theme.of(context).primaryColorDark;
     if ([1, 3, 5, 7].contains(v)) return Colors.red;
     if (v >= 9) return Colors.orange;
-    return Colors.grey;
+    return Colors.black;
   }
 
   /// ================= PIR =================
@@ -321,16 +322,16 @@ class FormatDynamicvalue {
     }
   }
 
-  static Color _pirStatusColor(String value) {
+  static Color _pirStatusColor(String value, BuildContext context) {
     switch (value) {
       case '1':
-        return Colors.green;
+        return Theme.of(context).primaryColorDark;
       case '2':
         return Colors.red;
       case '0':
-        return Colors.blueGrey;
+        return Colors.black54;
       default:
-        return Colors.grey;
+        return Colors.black;
     }
   }
 
@@ -351,16 +352,16 @@ class FormatDynamicvalue {
     }
   }
 
-  static Color _setTempSourceColor(String value) {
+  static Color _setTempSourceColor(String value, BuildContext context) {
     switch (value) {
       case '1':
         return Colors.blue;
       case '2':
-        return Colors.green;
+        return Theme.of(context).primaryColorDark;
       case '3':
         return Colors.purple;
       default:
-        return Colors.grey;
+        return Colors.black;
     }
   }
 
@@ -379,16 +380,16 @@ class FormatDynamicvalue {
     }
   }
 
-  static Color _levelSwitchColor(String value) {
+  static Color _levelSwitchColor(String value, BuildContext context) {
     switch (value) {
       case '0':
         return Colors.orange;
       case '1':
-        return Colors.green;
+        return Theme.of(context).primaryColorDark;
       case '2':
         return Colors.red;
       default:
-        return Colors.grey;
+        return Colors.black;
     }
   }
 

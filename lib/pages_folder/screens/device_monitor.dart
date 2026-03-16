@@ -155,8 +155,12 @@ class _DeviceMonitorState extends State<DeviceMonitor> {
 
                               return Container(
                                 decoration: BoxDecoration(
-                                  color: AppColors.conatinerColor(context),
+                                 color: AppColors.conatinerColor(context).withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                    color: Theme.of(context).primaryColor.withOpacity(0.9),
+                                    width: 2,
+                                  ),
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.all(16),
@@ -176,9 +180,7 @@ class _DeviceMonitorState extends State<DeviceMonitor> {
                                               style: TextStyle(
                                                 fontSize: 5.sp,
                                                 fontWeight: FontWeight.bold,
-                                                color: Theme.of(
-                                                  context,
-                                                ).primaryColor,
+                                                color: Theme.of(context).primaryColorDark
                                               ),
                                             ),
                                           ),
@@ -231,9 +233,7 @@ class _DeviceMonitorState extends State<DeviceMonitor> {
                                                 ),
                                                 child: Icon(
                                                   Icons.timer_rounded,
-                                                  color: Theme.of(
-                                                    context,
-                                                  ).primaryColor,
+                                                  color: Theme.of(context).primaryColorDark,
                                                   size: 20.r,
                                                 ),
                                               ),
@@ -347,6 +347,7 @@ class DynamicFieldGrid extends StatelessWidget {
             equipmentName: equipmentName,
           );
           final valueColor = FormatDynamicvalue.color(
+            context,
             field['name'],
             rawValue,
             equipmentName: equipmentName,
@@ -359,7 +360,7 @@ class DynamicFieldGrid extends StatelessWidget {
                   field['title'],
                   style: TextStyle(
                     fontSize: isTablet ? 4.sp : 12.sp,
-                    color: AppColors.textColor1(context).withOpacity(0.9),
+                    color: AppColors.textColor2(context).withOpacity(0.9),
                   ),
                 ),
               ),
@@ -378,7 +379,7 @@ class DynamicFieldGrid extends StatelessWidget {
                   field['unit'],
                   style: TextStyle(
                     fontSize: isTablet ? 4.sp : 11.sp,
-                    color: AppColors.textColor1(context).withOpacity(0.9),
+                    color: AppColors.textColor2(context),
                   ),
                 ),
               ],

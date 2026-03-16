@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -104,8 +103,8 @@ class _LocationListState extends State<LocationList> {
             return SafeArea(
               child: Container(
                 decoration: BoxDecoration(
-                  // color: Theme.of(context).primaryColor.withOpacity(0.3),
-                  // backgroundBlendMode: BlendMode.colorDodge,
+                  color: Theme.of(context).primaryColor.withOpacity(0.1),
+                  backgroundBlendMode: BlendMode.colorDodge,
                   image: DecorationImage(
                     image: AssetImage("assets/background.png"),
                     opacity: 0.2,
@@ -213,7 +212,9 @@ class _LocationListState extends State<LocationList> {
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                           fontSize: 5.sp,
-                                          color: AppColors.green,
+                                          color: Theme.of(
+                                            context,
+                                          ).primaryColorDark,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -225,7 +226,7 @@ class _LocationListState extends State<LocationList> {
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                          color: Color(0xff2F2F2F),
+                                          color: AppColors.textColor3(context),
                                           fontSize: 4.sp,
                                         ),
                                       ),
@@ -301,7 +302,7 @@ class _LocationListState extends State<LocationList> {
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: 12.sp,
-                                      color: AppColors.green,
+                                      color: Theme.of(context).primaryColorDark,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -341,7 +342,7 @@ class _LocationListState extends State<LocationList> {
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: selectedBuilding != null
-                                        ? AppColors.green
+                                        ? Theme.of(context).primaryColorDark
                                         : Colors.grey,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
@@ -428,7 +429,9 @@ class _LocationListState extends State<LocationList> {
                                                   BorderRadius.circular(15.r),
                                               border: Border.all(
                                                 color: isSelected
-                                                    ? AppColors.green
+                                                    ? Theme.of(
+                                                        context,
+                                                      ).primaryColorDark
                                                     : Colors.white10,
                                                 width: isSelected ? 2 : 1,
                                               ),
@@ -450,7 +453,9 @@ class _LocationListState extends State<LocationList> {
                                                         TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       fontSize: 5.sp,
-                                                      color: AppColors.green,
+                                                      color: Theme.of(
+                                                        context,
+                                                      ).primaryColorDark,
                                                       fontWeight:
                                                           FontWeight.bold,
                                                     ),
@@ -462,7 +467,9 @@ class _LocationListState extends State<LocationList> {
                                                       fontSize: 4.sp,
                                                       color: isSelected
                                                           ? Colors.white
-                                                          : Colors.black,
+                                                          : Colors
+                                                                .grey
+                                                                .shade800,
                                                       fontWeight:
                                                           FontWeight.w500,
                                                     ),
