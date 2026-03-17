@@ -103,7 +103,7 @@ class DynamicAppbar extends StatelessWidget implements PreferredSizeWidget {
                 if (showLoginButton)
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
+                      backgroundColor: AppColors.textColor2(context),
                       padding: EdgeInsets.symmetric(horizontal: 8.w),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.r),

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -73,7 +72,7 @@ class _FloorListState extends State<FloorList> {
             }
           },
         ),
-        backgroundColor: AppColors.darkgreen,
+        backgroundColor: Theme.of(context).primaryColor.withOpacity(0.3),
         appBar: DynamicAppbar(
           title: "Floors - ${widget.buildingModel.buildingName}",
           scaffoldKey: _scaffoldKey,
@@ -133,129 +132,143 @@ class _FloorListState extends State<FloorList> {
               }
               return SafeArea(
                 child: Container(
-                  decoration: BoxDecoration(color: AppColors.darkgreen),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 5.w),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 0.13.sw,
-                          height: 0.75.sh,
-                          decoration: BoxDecoration(
-                            color: AppColors.darkgreen,
-                            borderRadius: BorderRadius.circular(20.r),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.35),
-                                blurRadius: 12,
-                                spreadRadius: 2,
-                                offset: const Offset(4, 4),
-                              ),
-                            ],
-                          ),
-                
-                          child: floors.isEmpty
-                              ? const Center(child: Text("No floors found"))
-                              : Column(
-                                  children: [
-                                    Expanded(
-                                      child: ListView.builder(
-                                        itemCount: floors.length,
-                                        itemBuilder: (context, index) {
-                                          final floor = floors[index];
-                                          final isSelected =
-                                              selectedFloor?.floorId ==
-                                              floor.floorId;
-                
-                                          return InkWell(
-                                            onTap: () async {
-                                              await LocalStorage.saveFloorId(
-                                                floor.floorId,
-                                              );
-                                              await LocalStorage.clearRoomId();
-                                              setState(
-                                                () => selectedFloor = floor,
-                                              );
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: isSelected
-                                                    ? AppColors.lightgreen
-                                                    : Colors.transparent,
-                                                borderRadius:
-                                                    BorderRadius.circular(2.w),
-                                              ),
-                
-                                              child: Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                  horizontal: 6.w,
-                                                  vertical: 15.h,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor.withOpacity(0.3),
+                    backgroundBlendMode: BlendMode.colorDodge,
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 0.13.sw,
+                        decoration: BoxDecoration(
+                          color: Theme.of(
+                            context,
+                          ).primaryColor.withOpacity(0.1),
+                          backgroundBlendMode: BlendMode.colorDodge,
+                          borderRadius: BorderRadius.circular(20.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.35),
+                              blurRadius: 12,
+                              spreadRadius: 2,
+                              offset: const Offset(4, 4),
+                            ),
+                          ],
+                        ),
+
+                        child: floors.isEmpty
+                            ? const Center(child: Text("No floors found"))
+                            : Padding(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 20.h,
+                                  horizontal: 3.w,
+                                ),
+                                child: Center(
+                                  child: Column(
+                                    children: [
+                                      Expanded(
+                                        child: ListView.builder(
+                                          itemCount: floors.length,
+                                          itemBuilder: (context, index) {
+                                            final floor = floors[index];
+                                            final isSelected =
+                                                selectedFloor?.floorId ==
+                                                floor.floorId;
+                                  
+                                            return InkWell(
+                                              onTap: () async {
+                                                await LocalStorage.saveFloorId(
+                                                  floor.floorId,
+                                                );
+                                                await LocalStorage.clearRoomId();
+                                                setState(
+                                                  () => selectedFloor = floor,
+                                                );
+                                              },
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: isSelected
+                                                      ? Theme.of(
+                                                          context,
+                                                        ).primaryColor
+                                                      : Colors.transparent,
+                                                  borderRadius:
+                                                      BorderRadius.circular(2.w),
                                                 ),
-                                                child: Row(
-                                                  children: [
-                                                    Icon(
-                                                      isSelected
-                                                          ? Icons
-                                                                .radio_button_checked
-                                                          : Icons
-                                                                .radio_button_off,
-                                                      size: 4.5.sp,
-                                                      color: isSelected
-                                                          ? AppColors.darkgreen
-                                                          : Colors.grey,
-                                                    ),
-                                                    SpacerWidget.size8w,
-                
-                                                    Expanded(
-                                                      child: Text(
-                                                        floor.floorName,
-                                                        maxLines: 1,
-                                                        overflow:
-                                                            TextOverflow.ellipsis,
-                                                        style: TextStyle(
-                                                          fontSize: 4.sp,
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          color:
-                                                              AppColors.textColor2(
+                                  
+                                                child: Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                    horizontal: 6.w,
+                                                    vertical: 15.h,
+                                                  ),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        isSelected
+                                                            ? Icons
+                                                                  .radio_button_checked
+                                                            : Icons
+                                                                  .radio_button_off,
+                                                        size: 4.5.sp,
+                                                        color: isSelected
+                                                            ? Theme.of(
                                                                 context,
-                                                              ),
+                                                              ).primaryColor
+                                                            : Colors.grey,
+                                                      ),
+                                                      SpacerWidget.size8w,
+                                  
+                                                      Expanded(
+                                                        child: Text(
+                                                          floor.floorName,
+                                                          maxLines: 1,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: TextStyle(
+                                                            fontSize: 4.sp,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            color:
+                                                                AppColors.textColor2(
+                                                                  context,
+                                                                ),
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          );
-                                        },
+                                            );
+                                          },
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                        ),
-                
-                        // DEVICE MONITOR
-                        Expanded(
-                          child: selectedFloor == null
-                              ? Center(
-                                  child: Text(
-                                    "Select a floor",
-                                    style: TextStyle(
-                                      fontSize: 5.sp,
-                                      color: AppColors.textColor2(context),
-                                    ),
+                                    ],
                                   ),
-                                )
-                              : DeviceMonitor(
-                                  key: ValueKey(selectedFloor!.floorId),
-                                  floorModel: selectedFloor!,
-                                  buildingModel: widget.buildingModel,
-                                  userModel: widget.userModel,
                                 ),
-                        ),
-                      ],
-                    ),
+                              ),
+                      ),
+
+                      // DEVICE MONITOR
+                      Expanded(
+                        child: selectedFloor == null
+                            ? Center(
+                                child: Text(
+                                  "Select a floor",
+                                  style: TextStyle(
+                                    fontSize: 5.sp,
+                                    color: AppColors.textColor2(context),
+                                  ),
+                                ),
+                              )
+                            : DeviceMonitor(
+                                key: ValueKey(selectedFloor!.floorId),
+                                floorModel: selectedFloor!,
+                                buildingModel: widget.buildingModel,
+                                userModel: widget.userModel,
+                              ),
+                      ),
+                    ],
                   ),
                 ),
               );
@@ -294,7 +307,7 @@ class BuildingHighlightView extends StatelessWidget {
             width: 80.w,
             decoration: BoxDecoration(
               color: isSelected
-                  ? AppColors.lightgreen
+                  ? Theme.of(context).primaryColor
                   : Colors.white.withOpacity(0.25),
               borderRadius: BorderRadius.circular(4.r),
             ),

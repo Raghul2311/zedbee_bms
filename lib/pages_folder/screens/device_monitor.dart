@@ -56,9 +56,20 @@ class _DeviceMonitorState extends State<DeviceMonitor> {
           create: (_) => RoomListBloc(AuthService())..add(LoadRoomListEvent()),
         ),
       ],
-      child: Scaffold(
-        backgroundColor: AppColors.darkgreen,
-        body: BlocBuilder<EquipmentBloc, EquipmentState>(
+      child: Container(
+        height: 1.sw,
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor.withOpacity(0.1),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.35),
+              blurRadius: 12,
+              spreadRadius: 2,
+              offset: const Offset(4, 4),
+            ),
+          ],
+        ),
+        child: BlocBuilder<EquipmentBloc, EquipmentState>(
           builder: (context, state) {
             if (state is EquipmentLoading) {
               return const Center(child: AppLoader());
@@ -113,150 +124,153 @@ class _DeviceMonitorState extends State<DeviceMonitor> {
               }
               return SafeArea(
                 child: SingleChildScrollView(
-                  child: Container(
-                    decoration: BoxDecoration(color: AppColors.darkgreen),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 12.h,
-                        horizontal: 15.w,
-                      ),
-                      child: Column(
-                        children: [
-                          // equipment and room drop down ..............
-                          EquRoomdropdown(),
-                          SizedBox(height: 30.h),
-                          GridView.builder(
-                            shrinkWrap: true,
-                            physics: const BouncingScrollPhysics(),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: 10.w,
-                                  mainAxisSpacing: 40.h,
-                                  childAspectRatio: 1.9,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 12.h,
+                      horizontal: 15.w,
+                    ),
+                    child: Column(
+                      
+                      children: [
+                        // equipment and room drop down ..............
+                        EquRoomdropdown(),
+                        SizedBox(height: 30.h),
+                        GridView.builder(
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 10.w,
+                                mainAxisSpacing: 40.h,
+                                childAspectRatio: 1.9,
+                              ),
+                          itemCount: equipments.length,
+                          itemBuilder: (context, index) {
+                            final device = equipments[index];
+                            final displayName = getEquipmentDisplayName(
+                              device.rawData,
+                            );
+
+                            final lastUpdatedStr =
+                                device.rawData['last_updated_ts']?.toString() ??
+                                '0';
+
+                            final deviceStatus =
+                                DeviceStatusHelper.getStatusFromLastReporting(
+                                  lastReportingTs: lastUpdatedStr,
+                                  threshold: const Duration(hours: 2),
+                                );
+
+                            return Container(
+                              decoration: BoxDecoration(
+                                color: AppColors.conatinerColor2(
+                                  context,
+                                ).withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: Theme.of(
+                                    context,
+                                  ).primaryColor.withOpacity(0.9),
+                                  width: 2,
                                 ),
-                            itemCount: equipments.length,
-                            itemBuilder: (context, index) {
-                              final device = equipments[index];
-                              final displayName = getEquipmentDisplayName(
-                                device.rawData,
-                              );
-
-                              final lastUpdatedStr =
-                                  device.rawData['last_updated_ts']
-                                      ?.toString() ??
-                                  '0';
-
-                              final deviceStatus =
-                                  DeviceStatusHelper.getStatusFromLastReporting(
-                                    lastReportingTs: lastUpdatedStr,
-                                    threshold: const Duration(hours: 2),
-                                  );
-
-                              return Container(
-                                decoration: BoxDecoration(
-                                 color: AppColors.conatinerColor(context).withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(
-                                    color: Theme.of(context).primaryColor.withOpacity(0.9),
-                                    width: 2,
-                                  ),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            child: Text(
-                                              displayName,
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                fontSize: 5.sp,
-                                                fontWeight: FontWeight.bold,
-                                                color: Theme.of(context).primaryColorDark
-                                              ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            displayName,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: 5.sp,
+                                              fontWeight: FontWeight.bold,
+                                              color: Theme.of(
+                                                context,
+                                              ).primaryColor,
                                             ),
                                           ),
-                                          Row(
-                                            children: [
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  color:
-                                                      DeviceStatusHelper.containerColor(
-                                                        deviceStatus,
-                                                      ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                ),
-                                                child: Center(
-                                                  child: Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                          horizontal: 3.w,
-                                                          vertical: 4.h,
-                                                        ),
-                                                    child: Text(
-                                                      DeviceStatusHelper.statusText(
-                                                        deviceStatus,
-                                                      ),
-                                                      style: TextStyle(
-                                                        fontSize: 4.sp,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color:
-                                                            DeviceStatusHelper.statusColor(
-                                                              deviceStatus,
-                                                            ),
-                                                      ),
+                                        ),
+                                        Row(
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                color:
+                                                    DeviceStatusHelper.containerColor(
+                                                      deviceStatus,
+                                                    ),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              child: Center(
+                                                child: Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                    horizontal: 3.w,
+                                                    vertical: 4.h,
+                                                  ),
+                                                  child: Text(
+                                                    DeviceStatusHelper.statusText(
+                                                      deviceStatus,
+                                                    ),
+                                                    style: TextStyle(
+                                                      fontSize: 4.sp,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color:
+                                                          DeviceStatusHelper.statusColor(
+                                                            deviceStatus,
+                                                          ),
                                                     ),
                                                   ),
                                                 ),
                                               ),
-                                              SizedBox(width: 3.w),
-                                              Tooltip(
-                                                message: formatToIST(
-                                                  lastUpdatedStr,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  color: AppColors.textColor1(
-                                                    context,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                ),
-                                                child: Icon(
-                                                  Icons.timer_rounded,
-                                                  color: Theme.of(context).primaryColorDark,
-                                                  size: 20.r,
-                                                ),
+                                            ),
+                                            SizedBox(width: 3.w),
+                                            Tooltip(
+                                              message: formatToIST(
+                                                lastUpdatedStr,
                                               ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 12),
-                                      Expanded(
-                                        flex: 2,
-                                        child: DynamicFieldGrid(
-                                          jsonData: device.rawData,
-                                          equipmentName: displayName,
+                                              decoration: BoxDecoration(
+                                                color: AppColors.textColor1(
+                                                  context,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              child: Icon(
+                                                Icons.timer_rounded,
+                                                color: Theme.of(
+                                                  context,
+                                                ).primaryColor,
+                                                size: 20.r,
+                                              ),
+                                            ),
+                                          ],
                                         ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 12),
+                                    Expanded(
+                                      flex: 2,
+                                      child: DynamicFieldGrid(
+                                        jsonData: device.rawData,
+                                        equipmentName: displayName,
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ),

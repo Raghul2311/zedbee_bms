@@ -21,10 +21,10 @@ class LocationDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /// Remove duplicates safely
+    // Remove duplicates safely
     final uniqueItems = items.toSet().toList();
 
-    /// Ensure selected value exists in list
+    // Ensure selected value exists in list
     final safeValue = uniqueItems.contains(value) ? value : null;
 
     return SizedBox(
@@ -40,10 +40,9 @@ class LocationDropdown extends StatelessWidget {
 
         style: TextStyle(
           fontSize: 4.sp,
-                                      color: Theme.of(context).primaryColorDark,
+          color: Theme.of(context).primaryColor,
           fontWeight: FontWeight.w700,
         ),
-
         hint: Text(
           hint,
           style: TextStyle(
@@ -55,13 +54,10 @@ class LocationDropdown extends StatelessWidget {
 
         items: uniqueItems
             .map(
-              (item) => DropdownMenuItem<String>(
-                value: item,
-                child: Text(item),
-              ),
+              (item) =>
+                  DropdownMenuItem<String>(value: item, child: Text(item)),
             )
             .toList(),
-
         onChanged: onChanged,
       ),
     );
@@ -73,10 +69,7 @@ class LocationDropdown extends StatelessWidget {
       filled: true,
       fillColor: Colors.white.withOpacity(0.2),
 
-      contentPadding: EdgeInsets.symmetric(
-        horizontal: 6.w,
-        vertical: 8.h,
-      ),
+      contentPadding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 8.h),
 
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(15.r),

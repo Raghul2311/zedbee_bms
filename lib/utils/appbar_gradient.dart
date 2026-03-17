@@ -4,14 +4,14 @@ import 'package:zedbee_bms/utils/app_themes.dart';
 
 List<Color> getThemeGradient(AppTheme theme) {
   switch (theme) {
-    case AppTheme.system:
-      return [AppColors.darkgreen, AppColors.lightgreen.withOpacity(0.3)];
     case AppTheme.light:
+      return [AppColors.darkgreen, AppColors.lightgreen.withOpacity(0.3)];
+    // case AppTheme.light:
+    //   return [Colors.green, AppColors.green.withOpacity(0.3)];
+    case AppTheme.blue:
       return [AppColors.darkBlue, AppColors.lightBlue.withOpacity(0.3)];
-
     case AppTheme.dark:
-      return [AppColors.bgcolor, Colors.black12];
-
+      return [AppColors.green, AppColors.lightgreen.withOpacity(0.3)];
     case AppTheme.orange:
       return [AppColors.orange, Colors.deepOrange.withOpacity(0.3)];
 

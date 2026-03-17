@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -89,7 +88,7 @@ class _BuildingListState extends State<BuildingList> {
           );
         },
       ),
-      backgroundColor: AppColors.darkgreen,
+      backgroundColor: Theme.of(context).primaryColor.withOpacity(0.3),
       body: BlocBuilder<BuildingBloc, BuildingState>(
         builder: (context, buildingState) {
           if (buildingState is BuildingLoading) {
@@ -134,7 +133,7 @@ class _BuildingListState extends State<BuildingList> {
             height: screenHeight,
             width: screenWidth,
             decoration: BoxDecoration(
-              color: AppColors.darkgreen,
+              color: Theme.of(context).primaryColor.withOpacity(0.1),
               backgroundBlendMode: BlendMode.colorDodge,
               image: DecorationImage(
                 image: AssetImage("assets/background.png"),
@@ -189,7 +188,7 @@ class _BuildingListState extends State<BuildingList> {
                           style: TextStyle(
                             fontSize: 10.sp,
                             decorationStyle: TextDecorationStyle.solid,
-                            color: AppColors.green,
+                            color: Theme.of(context).primaryColor,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -210,33 +209,50 @@ class _BuildingListState extends State<BuildingList> {
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 5.w),
                               decoration: BoxDecoration(
-                                color: AppColors.darkgreen.withOpacity(0.5),
+                                color: AppColors.textColor2(context),
                                 borderRadius: BorderRadius.circular(10.r),
-                                border: Border.all(color: AppColors.lightgreen),
+                                border: Border.all(
+                                  color: Theme.of(context).primaryColor,
+                                  width: 1.5,
+                                ),
                               ),
                               child: DropdownButtonHideUnderline(
                                 child: DropdownButton<String>(
                                   value: selectedSort,
                                   icon: ImageIcon(
                                     const AssetImage("assets/sort.png"),
-                                    color: AppColors.textColor2(context),
+                                    color: AppColors.textColor1(context),
                                     size: 15,
                                   ),
-                                  dropdownColor: AppColors.darkgreen,
+                                  dropdownColor: Theme.of(
+                                    context,
+                                  ).scaffoldBackgroundColor,
                                   style: TextStyle(
                                     fontSize: 5.sp,
                                     color: AppColors.textColor2(context),
                                     fontWeight: FontWeight.w400,
                                   ),
 
-                                  items: const [
+                                  items: [
                                     DropdownMenuItem(
                                       value: "Sort",
-                                      child: Text("Sort"),
+                                      child: Text(
+                                        "Sort",
+                                        style: TextStyle(
+                                          color: Theme.of(context).primaryColor,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
                                     ),
                                     DropdownMenuItem(
                                       value: "Name",
-                                      child: Text("Name"),
+                                      child: Text(
+                                        "Name",
+                                        style: TextStyle(
+                                          color: Theme.of(context).primaryColor,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
                                     ),
                                   ],
 
@@ -283,7 +299,7 @@ class _BuildingListState extends State<BuildingList> {
                                       color: AppColors.textColor2(context),
                                       borderRadius: BorderRadius.circular(20.r),
                                       border: Border.all(
-                                        color: AppColors.lightgreen,
+                                        color: Theme.of(context).primaryColor,
                                         width: 3,
                                       ),
                                     ),
@@ -299,8 +315,10 @@ class _BuildingListState extends State<BuildingList> {
                                               begin: Alignment.topLeft,
                                               end: Alignment.topRight,
                                               colors: [
-                                                Color(0xff009163),
-                                                Colors.teal,
+                                                Theme.of(context).primaryColor,
+                                                Theme.of(
+                                                  context,
+                                                ).primaryColorLight,
                                               ],
                                             ),
                                             borderRadius: BorderRadius.vertical(
@@ -334,7 +352,9 @@ class _BuildingListState extends State<BuildingList> {
                                               style: TextStyle(
                                                 fontSize: 5.sp,
                                                 fontWeight: FontWeight.w600,
-                                                color: AppColors.green,
+                                                color: Theme.of(
+                                                  context,
+                                                ).primaryColor,
                                               ),
                                             ),
 
@@ -355,7 +375,7 @@ class _BuildingListState extends State<BuildingList> {
                                               child: ElevatedButton(
                                                 style: ElevatedButton.styleFrom(
                                                   backgroundColor:
-                                                      AppColors.green,
+                                                    Theme.of(context).primaryColor,
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:
                                                         BorderRadius.circular(

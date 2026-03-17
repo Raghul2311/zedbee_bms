@@ -76,7 +76,7 @@ class _EquRoomdropdownState extends State<EquRoomdropdown> {
                         'Select equipment (${state.totalDevices})',
                         style: TextStyle(
                           fontSize: 4.sp,
-                          color: AppColors.green,
+                          color: AppColors.textColor2(context),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -88,7 +88,7 @@ class _EquRoomdropdownState extends State<EquRoomdropdown> {
                           '${entry.key} (${entry.value})',
                           style: TextStyle(
                             fontSize: 4.sp,
-                            color: AppColors.green,
+                            color: Theme.of(context).primaryColor,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -161,7 +161,7 @@ class _EquRoomdropdownState extends State<EquRoomdropdown> {
                         'Select Room',
                         style: TextStyle(
                           fontSize: 4.sp,
-                          color:AppColors.green,
+                          color:AppColors.textColor2(context),
                         ),
                       ),
                     ),
@@ -171,7 +171,7 @@ class _EquRoomdropdownState extends State<EquRoomdropdown> {
                         child: Text(
                           room.roomName ?? '',
                           style: TextStyle( fontSize: 4.sp,
-                      color: AppColors.green,
+                      color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.bold,
                     ),
                         ),

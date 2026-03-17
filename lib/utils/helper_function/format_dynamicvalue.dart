@@ -98,7 +98,7 @@ class FormatDynamicvalue {
       case 'frs':
       case 'scs':
       case 'chs':
-        return value == '0' ? Theme.of(context).primaryColorDark : Colors.red;
+        return value == '0' ? Theme.of(context).primaryColor : Colors.red;
       case 'mod':
         return _modeColor(value, context);
       case 'pir':
@@ -108,7 +108,7 @@ class FormatDynamicvalue {
       case 'level':
         return _levelSwitchColor(value, context);
       default:
-        return Theme.of(context).primaryColorDark;
+        return Theme.of(context).primaryColor;
     }
   }
 
@@ -219,7 +219,7 @@ class FormatDynamicvalue {
   static Color _modeColor(String value, BuildContext context) {
     switch (value) {
       case '0':
-        return Theme.of(context).primaryColorDark;
+        return Theme.of(context).primaryColor;
       case '1':
         return Colors.red;
       case '2':
@@ -264,7 +264,7 @@ class FormatDynamicvalue {
     if (v == null) return Colors.black;
     if (v == 16) return Colors.red;
     if (v == 17) return Colors.orange;
-    if (v == 0) return Theme.of(context).primaryColorDark;
+    if (v == 0) return Theme.of(context).primaryColor;
     return Colors.black54;
   }
 
@@ -299,7 +299,7 @@ class FormatDynamicvalue {
   static Color _vavSourceColor(String value, BuildContext context) {
     final v = int.tryParse(value);
     if (v == null) return Colors.black;
-    if ([0, 2, 4, 6, 8].contains(v)) return Theme.of(context).primaryColorDark;
+    if ([0, 2, 4, 6, 8].contains(v)) return Theme.of(context).primaryColor;
     if ([1, 3, 5, 7].contains(v)) return Colors.red;
     if (v >= 9) return Colors.orange;
     return Colors.black;
@@ -325,7 +325,7 @@ class FormatDynamicvalue {
   static Color _pirStatusColor(String value, BuildContext context) {
     switch (value) {
       case '1':
-        return Theme.of(context).primaryColorDark;
+        return Theme.of(context).primaryColor;
       case '2':
         return Colors.red;
       case '0':
@@ -357,7 +357,7 @@ class FormatDynamicvalue {
       case '1':
         return Colors.blue;
       case '2':
-        return Theme.of(context).primaryColorDark;
+        return Theme.of(context).primaryColor;
       case '3':
         return Colors.purple;
       default:
@@ -385,7 +385,7 @@ class FormatDynamicvalue {
       case '0':
         return Colors.orange;
       case '1':
-        return Theme.of(context).primaryColorDark;
+        return Theme.of(context).primaryColor;
       case '2':
         return Colors.red;
       default:

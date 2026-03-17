@@ -150,7 +150,9 @@ class _LocationListState extends State<LocationList> {
                                   width: 90.w,
                                   padding: EdgeInsets.all(5.w),
                                   decoration: BoxDecoration(
-                                    color: AppColors.textColor2(context),
+                                    color: Theme.of(
+                                      context,
+                                    ).scaffoldBackgroundColor,
                                     borderRadius: BorderRadius.circular(20.r),
                                   ),
                                   child: Column(
@@ -187,7 +189,6 @@ class _LocationListState extends State<LocationList> {
                                                         ),
                                                       );
                                                     },
-
                                                 errorBuilder:
                                                     (
                                                       context,
@@ -212,9 +213,7 @@ class _LocationListState extends State<LocationList> {
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                           fontSize: 5.sp,
-                                          color: Theme.of(
-                                            context,
-                                          ).primaryColorDark,
+                                          color: Theme.of(context).primaryColor,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -302,7 +301,7 @@ class _LocationListState extends State<LocationList> {
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: 12.sp,
-                                      color: Theme.of(context).primaryColorDark,
+                                      color: Theme.of(context).primaryColor,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -342,7 +341,7 @@ class _LocationListState extends State<LocationList> {
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: selectedBuilding != null
-                                        ? Theme.of(context).primaryColorDark
+                                        ? Theme.of(context).primaryColor
                                         : Colors.grey,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
@@ -386,7 +385,7 @@ class _LocationListState extends State<LocationList> {
                                   "${state.buildingCountByGroup.length} Total Locations",
                                   style: TextStyle(
                                     fontSize: 6.sp,
-                                    color: AppColors.textColor2(context),
+                                    color: Colors.white,
                                   ),
                                 ),
                                 SizedBox(height: 15.h),
@@ -419,9 +418,7 @@ class _LocationListState extends State<LocationList> {
                                             margin: EdgeInsets.only(right: 9.w),
                                             decoration: BoxDecoration(
                                               color: isSelected
-                                                  ? Colors.white.withOpacity(
-                                                      0.3,
-                                                    )
+                                                  ? Theme.of(context).cardColor
                                                   : AppColors.conatinerColor(
                                                       context,
                                                     ),
@@ -431,8 +428,10 @@ class _LocationListState extends State<LocationList> {
                                                 color: isSelected
                                                     ? Theme.of(
                                                         context,
-                                                      ).primaryColorDark
-                                                    : Colors.white10,
+                                                      ).primaryColorLight
+                                                    : Theme.of(
+                                                        context,
+                                                      ).primaryColor,
                                                 width: isSelected ? 2 : 1,
                                               ),
                                             ),
@@ -455,7 +454,7 @@ class _LocationListState extends State<LocationList> {
                                                       fontSize: 5.sp,
                                                       color: Theme.of(
                                                         context,
-                                                      ).primaryColorDark,
+                                                      ).primaryColor,
                                                       fontWeight:
                                                           FontWeight.bold,
                                                     ),
@@ -466,10 +465,12 @@ class _LocationListState extends State<LocationList> {
                                                     style: TextStyle(
                                                       fontSize: 4.sp,
                                                       color: isSelected
-                                                          ? Colors.white
-                                                          : Colors
-                                                                .grey
-                                                                .shade800,
+                                                          ? AppColors.textColor1(
+                                                              context,
+                                                            )
+                                                          : AppColors.textColor1(
+                                                              context,
+                                                            ),
                                                       fontWeight:
                                                           FontWeight.w500,
                                                     ),
