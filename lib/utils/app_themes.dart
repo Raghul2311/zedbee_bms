@@ -11,7 +11,6 @@ final appThemeData = {
     primaryColorLight: AppColors.green,
     fontFamily: "Poppins",
     cardColor: Colors.white.withOpacity(0.3),
-    // cardColor: Color(0xff648995),
     scaffoldBackgroundColor: Colors.white,
     appBarTheme: const AppBarTheme(
       foregroundColor: Colors.black, // text/icons
@@ -31,17 +30,7 @@ final appThemeData = {
     ),
   ),
 
-  // AppTheme.light: ThemeData(
-  //   useMaterial3: true,
-  //   brightness: Brightness.light,
-  //   primaryColor: AppColors.darkgreen,
-  //   primaryColorLight: AppColors.darkgreen,
-  //   fontFamily: "Poppins",
-  //   scaffoldBackgroundColor: Colors.white,
-  //   appBarTheme: const AppBarTheme(
-  //     foregroundColor: Colors.black, // text/icons
-  //   ),
-  // ),
+ 
   AppTheme.blue: ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
@@ -98,8 +87,6 @@ Color themePreviewColor(AppTheme theme) {
   switch (theme) {
     case AppTheme.light:
       return AppColors.lightgreen;
-    // case AppTheme.light:
-    //   return AppColors.darkBlue;
     case AppTheme.dark:
       return AppColors.darkgreen;
     case AppTheme.blue:

@@ -1,3 +1,4 @@
+// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -74,7 +75,6 @@ class _DeviceMonitorState extends State<DeviceMonitor> {
             if (state is EquipmentLoading) {
               return const Center(child: AppLoader());
             }
-
             if (state is EquipmentError) {
               return Center(
                 child: Text(
@@ -130,7 +130,6 @@ class _DeviceMonitorState extends State<DeviceMonitor> {
                       horizontal: 15.w,
                     ),
                     child: Column(
-                      
                       children: [
                         // equipment and room drop down ..............
                         EquRoomdropdown(),
@@ -276,7 +275,6 @@ class _DeviceMonitorState extends State<DeviceMonitor> {
                 ),
               );
             }
-
             return const SizedBox();
           },
         ),
@@ -287,9 +285,21 @@ class _DeviceMonitorState extends State<DeviceMonitor> {
 
 // ================= INNER GRID VIEW =================
 
-class DynamicFieldGrid extends StatelessWidget {
+class DynamicFieldGrid extends StatefulWidget {
   final Map<String, dynamic> jsonData;
   final String? equipmentName;
+  const DynamicFieldGrid({
+    super.key,
+    required this.jsonData,
+    this.equipmentName,
+  });
+
+  @override
+  State<DynamicFieldGrid> createState() => _DynamicFieldGridState();
+}
+
+class _DynamicFieldGridState extends State<DynamicFieldGrid> {
+  final _authService = AuthService();
 
   // Helper Function to detect empty values ........
   bool _isEmptyValue(dynamic rawValue, String fieldName) {
@@ -301,25 +311,18 @@ class DynamicFieldGrid extends StatelessWidget {
         formatted == '--';
   }
 
-  const DynamicFieldGrid({
-    super.key,
-    required this.jsonData,
-    this.equipmentName,
-  });
-
   @override
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> fields = [];
-    bool isTablet = ScreenUtil().screenWidth >= 600;
 
-    final params = jsonData['params'];
+    final params = widget.jsonData['params'];
     if (params is List) {
       for (final p in params) {
         if (p is Map<String, dynamic>) {
           final rawName = p['name']?.toString();
           if (rawName == null) continue;
           // Empty parms are not shown ..........
-          final rawValue = jsonData[rawName];
+          final rawValue = widget.jsonData[rawName];
           if (_isEmptyValue(rawValue, rawName)) continue;
           fields.add({
             'title': p['description'] ?? rawName,
@@ -333,10 +336,7 @@ class DynamicFieldGrid extends StatelessWidget {
       return Center(
         child: Text(
           "No parameters available",
-          style: TextStyle(
-            fontSize: isTablet ? 4.sp : 9.sp,
-            color: Colors.grey,
-          ),
+          style: TextStyle(fontSize: 4.sp, color: Colors.grey),
         ),
       );
     }
@@ -350,22 +350,187 @@ class DynamicFieldGrid extends StatelessWidget {
           crossAxisCount: 1,
           crossAxisSpacing: 3.w,
           mainAxisSpacing: 2.h,
-          childAspectRatio: isTablet ? 14 : 11,
+          childAspectRatio: 14,
         ),
         itemBuilder: (context, index) {
           final field = fields[index];
-          final rawValue = jsonData[field['name']];
+          final rawValue = widget.jsonData[field['name']];
           final value = FormatDynamicvalue.format(
             field['name'],
             rawValue,
-            equipmentName: equipmentName,
+            equipmentName: widget.equipmentName,
           );
           final valueColor = FormatDynamicvalue.color(
             context,
             field['name'],
             rawValue,
-            equipmentName: equipmentName,
+            equipmentName: widget.equipmentName,
           );
+
+          // control ON/OFF status ................
+          Widget valueWidget;
+
+          final fieldName = field['name'].toString().toLowerCase();
+          // VFS field will show toggle switch
+          if (fieldName == 'vfs') {
+            valueWidget = Row(
+              children: [
+                Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: 5.sp,
+                    fontWeight: FontWeight.bold,
+                    color: value == 'ON' || value == '1'
+                        ? Theme.of(context).primaryColor
+                        : Colors.red,
+                  ),
+                ),
+                Transform.scale(
+                  scale: 0.7,
+                  child: Switch(
+                    value: value == 'ON',
+                    activeThumbColor: Theme.of(context).primaryColor,
+                    inactiveThumbColor: Colors.red,
+                    onChanged: (bool newValue) async {
+                      final command = newValue ? "1" : "0";
+                      final deviceId =
+                          widget.jsonData['device_id']?.toString() ?? '';
+                      final equipmentId =
+                          widget.jsonData['equipment_id']?.toString() ?? '';
+                      final deviceType =
+                          widget.jsonData['equipment_nam']?.toString() ?? '';
+
+                      // optimistic ui update
+                      widget.jsonData[field['name']] = command;
+                      setState(() {});
+                      final success = await _authService.sendCommand(
+                        deviceId: deviceId,
+                        equipmentId: equipmentId,
+                        parameter: fieldName,
+                        command: command,
+                        deviceType: deviceType,
+                      );
+
+                      if (!success) {
+                        // rollback UI if failed
+                        widget.jsonData[field['name']] = !newValue ? "1" : "0";
+                        setState(() {});
+                      }
+
+                      debugPrint("VFS toggled: $newValue");
+                    },
+                  ),
+                ),
+              ],
+            );
+          } else if (fieldName == 'was' ||
+              fieldName == 'st1' ||
+              fieldName == 'tfq') {
+            valueWidget = Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    final controller = TextEditingController(text: value);
+
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text(
+                            "Set ${field['title']}",
+                            style: TextStyle(
+                              fontSize: 4.sp,
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          content: TextField(
+                            controller: controller,
+                            keyboardType: TextInputType.number,
+                            decoration: const InputDecoration(
+                              labelText: "Enter value",
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                "Cancel",
+                                style: TextStyle(
+                                  fontSize: 4.sp,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () async {
+                                final newValue = controller.text;
+
+                                final deviceId =
+                                    widget.jsonData['device_id'] ?? '';
+                                final equipmentId =
+                                    widget.jsonData['equipment_id'] ?? '';
+                                final deviceType =
+                                    widget.jsonData['equipment_nam'] ?? '';
+
+                                // update UI
+                                widget.jsonData[field['name']] = newValue;
+
+                                Navigator.pop(context);
+                                setState(() {});
+
+                                final success = await _authService.sendCommand(
+                                  deviceId: deviceId,
+                                  equipmentId: equipmentId,
+                                  parameter: fieldName,
+                                  command: newValue,
+                                  deviceType: deviceType,
+                                );
+
+                                if (!success) {
+                                  debugPrint(
+                                    "❌ Failed to update ${field['name']}",
+                                  );
+                                }
+                              },
+                              child: Text(
+                                "SET",
+                                style: TextStyle(fontSize: 4.sp),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  icon: Icon(
+                    Icons.edit,
+                    size: 5.sp,
+                    color: AppColors.textColor2(context),
+                  ),
+                ),
+                Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: 5.sp,
+                    fontWeight: FontWeight.bold,
+                    color: valueColor,
+                  ),
+                ),
+              ],
+            );
+          } else {
+            valueWidget = Text(
+              value,
+              style: TextStyle(
+                fontSize: 5.sp,
+                fontWeight: FontWeight.bold,
+                color: valueColor,
+              ),
+            );
+          }
           return Row(
             children: [
               Expanded(
@@ -373,26 +538,19 @@ class DynamicFieldGrid extends StatelessWidget {
                 child: Text(
                   field['title'],
                   style: TextStyle(
-                    fontSize: isTablet ? 4.sp : 12.sp,
+                    fontSize: 4.sp,
                     color: AppColors.textColor2(context).withOpacity(0.9),
                   ),
                 ),
               ),
               SpacerWidget.size8w,
-              Text(
-                value,
-                style: TextStyle(
-                  fontSize: isTablet ? 5.sp : 14.sp,
-                  fontWeight: FontWeight.bold,
-                  color: valueColor,
-                ),
-              ),
+              valueWidget,
               if (field['unit'].toString().isNotEmpty) ...[
                 SizedBox(width: 4.w),
                 Text(
                   field['unit'],
                   style: TextStyle(
-                    fontSize: isTablet ? 4.sp : 11.sp,
+                    fontSize: 4.sp,
                     color: AppColors.textColor2(context),
                   ),
                 ),

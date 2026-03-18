@@ -6,8 +6,6 @@ List<Color> getThemeGradient(AppTheme theme) {
   switch (theme) {
     case AppTheme.light:
       return [AppColors.darkgreen, AppColors.lightgreen.withOpacity(0.3)];
-    // case AppTheme.light:
-    //   return [Colors.green, AppColors.green.withOpacity(0.3)];
     case AppTheme.blue:
       return [AppColors.darkBlue, AppColors.lightBlue.withOpacity(0.3)];
     case AppTheme.dark:

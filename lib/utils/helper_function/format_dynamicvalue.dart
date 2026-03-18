@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FormatDynamicvalue {
-  /// ================= PUBLIC API =================
+  // ================= PUBLIC API =================
 
   static String format(
     String fieldName,
@@ -150,7 +150,7 @@ class FormatDynamicvalue {
       ? 'Fire Event'
       : 'N/A';
 
-  /// ================= PAM =================
+  // ================= PAM =================
 
   static String _pamStatus(String value) {
     switch (value) {

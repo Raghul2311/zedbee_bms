@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:zedbee_bms/data_folder/model_folder/adddevice_model.dart';
 import 'package:zedbee_bms/data_folder/model_folder/building_model.dart';
@@ -18,6 +18,8 @@ import 'package:zedbee_bms/utils/local_storage.dart';
 class AuthService {
   static const String baseUrl =
       'https://zedbee.io/api/micro/service/call/post/BZHEZISEWY/mobile';
+
+  static const String commandUrl = "https://zedbee.io/bms/send-raw-command";
   // Default Headers
   final Map<String, String> _defaultHeaders = {
     "Content-Type": "application/json",
@@ -77,7 +79,7 @@ class AuthService {
       final decoded = jsonDecode(response.body);
 
       if (response.statusCode != 200) {
-        throw Exception(decoded['message'] ?? 'No buildings Found');
+        throw Exception("No buildings Found");
       }
 
       final hits = decoded['result']?['hits']?['hits'] as List<dynamic>?;
@@ -104,7 +106,7 @@ class AuthService {
 
       return buildings;
     } catch (e) {
-      throw Exception("No Building Found: $e");
+      throw Exception("No Building Found");
     }
   }
 
@@ -129,13 +131,13 @@ class AuthService {
       final response = await http.post(url, headers: headers, body: body);
 
       if (response.body.isEmpty) {
-        throw Exception('Empty response from server');
+        throw Exception('Server Not Found');
       }
 
       final decoded = jsonDecode(response.body);
 
       if (response.statusCode != 200) {
-        throw Exception(decoded['message'] ?? 'Floors Not Found');
+        throw Exception('Floors Not Found');
       }
 
       final hits = decoded['result']?['hits']?['hits'] as List<dynamic>?;
@@ -147,7 +149,7 @@ class AuthService {
         return FloorModel.fromJson(source, custKey);
       }).toList();
     } catch (e) {
-      throw Exception("Floors Not Found: $e");
+      throw Exception("Floors Not Found");
     }
   }
 
@@ -204,13 +206,13 @@ class AuthService {
       final response = await http.post(url, headers: headers, body: body);
 
       if (response.body.isEmpty) {
-        throw Exception('Empty response from server');
+        throw Exception('Server Not Found');
       }
 
       final decoded = jsonDecode(response.body);
 
       if (response.statusCode != 200) {
-        throw Exception(decoded['message'] ?? 'Rooms Not Found');
+        throw Exception('Rooms Not Found');
       }
 
       final hits = decoded['result']?['hits']?['hits'] as List<dynamic>?;
@@ -226,7 +228,7 @@ class AuthService {
           .whereType<RoomModel>()
           .toList(); // remove nulls
     } catch (e) {
-      throw Exception("Rooms Not Found: $e");
+      throw Exception("Rooms Not Found");
     }
   }
 
@@ -249,13 +251,13 @@ class AuthService {
       final response = await http.post(url, headers: headers, body: body);
 
       if (response.body.isEmpty) {
-        throw Exception("Empty response");
+        throw Exception(" Server Not response");
       }
 
       final decoded = jsonDecode(response.body);
 
       if (response.statusCode != 200) {
-        throw Exception(decoded["message"] ?? "Equipment Not Found");
+        throw Exception("Equipment Not Found");
       }
 
       final hits = decoded['result']?['hits']?['hits'] as List<dynamic>?;
@@ -269,7 +271,7 @@ class AuthService {
           )
           .toList();
     } catch (e) {
-      throw Exception("Equipment Not Found: $e");
+      throw Exception("Equipment Not Found");
     }
   }
 
@@ -296,7 +298,7 @@ class AuthService {
       final response = await http.post(url, headers: headers, body: body);
 
       if (response.body.isEmpty) {
-        throw Exception("Empty response from server");
+        throw Exception("Server Not Found");
       }
 
       final decoded = jsonDecode(response.body);
@@ -309,7 +311,7 @@ class AuthService {
       // Convert raw JSON → model
       return AddDeviceModel.fromJson(decoded);
     } catch (e) {
-      throw Exception("Add device Failed: $e");
+      throw Exception("Add device Failed");
     }
   }
 
@@ -332,7 +334,7 @@ class AuthService {
       final response = await http.post(url, headers: headers, body: body);
 
       if (response.body.isEmpty) {
-        throw Exception("Empty response");
+        throw Exception("Server Not Found");
       }
 
       final decoded = jsonDecode(response.body);
@@ -343,7 +345,7 @@ class AuthService {
 
       return AddDeviceModel.fromJson(decoded);
     } catch (e) {
-      throw Exception("Delete device error: $e");
+      throw Exception("Delete device error");
     }
   }
 
@@ -379,6 +381,47 @@ class AuthService {
       return DeviceListResponse.fromJson(data);
     } catch (e) {
       throw Exception("Device Error: $e");
+    }
+  }
+
+  // COMMAND API
+  Future<bool> sendCommand({
+    required String deviceId,
+    required String equipmentId,
+    required String parameter,
+    required String command,
+    required String deviceType,
+  }) async {
+    final url = Uri.parse(commandUrl);
+
+    final body = {
+      "device_id": deviceId,
+      "command": command,
+      "device_type_nam": deviceType,
+      "equipment_id": equipmentId,
+      "parameter": parameter,
+      "created_ts": DateTime.now().millisecondsSinceEpoch,
+    };
+
+    try {
+      final response = await http.post(
+        url,
+        headers: _defaultHeaders,
+        body: jsonEncode(body),
+      );
+
+      // PRINT EVERYTHING
+      debugPrint("REQUEST BODY: ${jsonEncode(body)}");
+      debugPrint("STATUS CODE: ${response.statusCode}");
+      debugPrint("RESPONSE BODY: ${response.body}");
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
     }
   }
 }

@@ -1,4 +1,3 @@
-
 import 'package:zedbee_bms/data_folder/model_folder/user_model.dart';
 
 class AddDeviceModel {
@@ -48,7 +47,7 @@ class AddDeviceRequestModel {
     this.createdTs,
   });
 
-  /// Build request model using UserModel + deviceId
+  // Build request model using UserModel + deviceId
   factory AddDeviceRequestModel.fromUser({
     required UserModel user,
     required String deviceId,
